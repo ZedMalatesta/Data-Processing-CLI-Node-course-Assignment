@@ -15,6 +15,6 @@
   "type": "module",
   "main": "main.js",
   "scripts": {
-    "test": "Hello world"
+    "start": "node main.js"
   }
 }

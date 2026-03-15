@@ -6,7 +6,9 @@ import {
     handleJsonToCSV,
     handleCount,
     handleHash,
-    handleHashCompare
+    handleHashCompare,
+    handleEncrypt,
+    handleDecrypt
 } from "../handlers/index.js"
 import { parseArgs } from '../utils/index.js'
 
@@ -64,33 +66,33 @@ const routing = async (line, currentDir) => {
                 await handleLS(currentDir);
                 return setSuccessStatus();
             case "csv-to-json":
-                if(!flags['input']) return setErrorStatus("Operation failed");  
+                if(!flags['input'] || !flags['output']) return setErrorStatus("Invalid input");  
                 await handleCSVToJson(currentDir, flags['input'], flags['output'])  
-                return setSuccessStatus("Success!");               
+                return setSuccessStatus();               
             case "json-to-csv":
-                if(!flags['input']) return setErrorStatus("Operation failed");  
+                if(!flags['input'] || !flags['output']) return setErrorStatus("Invalid input");  
                 await handleJsonToCSV(currentDir, flags['input'], flags['output'])
-                return setSuccessStatus("Success!");         
+                return setSuccessStatus();         
             case "count":
-                if(!flags['input']) return setErrorStatus("Operation failed");
+                if(!flags['input']) return setErrorStatus("Invalid input");
                 result = await handleCount(currentDir, flags['input']);
                 return setSuccessStatus(`Lines: ${result.lines}\nWords: ${result.words}\nCharacters: ${result.characters}`);
             case 'hash': 
-                if(!flags['input']) return setErrorStatus("Operation failed");
+                if(!flags['input']) return setErrorStatus("Invalid input");
                 result = await handleHash(currentDir, flags['input'], flags['algorithm'], flags['save']);
-                return setSuccessStatus(`${result.algorithm}: ${result.hashValue}\n`);                   
+                return setSuccessStatus(`${result.algorithm}: ${result.hashValue}`);                   
             case 'hash-compare': 
-                if(!flags['input']||!flags['hash']) return setErrorStatus("Operation failed");
+                if(!flags['input']||!flags['hash']) return setErrorStatus("Invalid input");
                 result = await handleHashCompare(currentDir, flags['input'], flags['hash'], flags['algorithm']);
-                return setSuccessStatus(`${result}\n`);
+                return setSuccessStatus(result);
             case "encrypt":
-                if(!flags['input'] || !flags['output'] || !flags['password']) return setErrorStatus("Operation failed");
+                if(!flags['input'] || !flags['output'] || !flags['password']) return setErrorStatus("Invalid input");
                 await handleEncrypt(currentDir, flags['input'], flags['output'], flags['password']);
-                return setSuccessStatus();
+                return setSuccessStatus();    
             case "decrypt":
-                if(!flags['input'] || !flags['output'] || !flags['password']) return setErrorStatus("Operation failed");
+                if(!flags['input'] || !flags['output'] || !flags['password']) return setErrorStatus("Invalid input");
                 await handleDecrypt(currentDir, flags['input'], flags['output'], flags['password']);
-                return setSuccessStatus();     
+                return setSuccessStatus();    
 
             case ".exit":
                 return setExitStatus();

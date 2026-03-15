@@ -1,4 +1,4 @@
-const localSort = async (a,b) => {
+const localSort = (a, b) => {
     return a['Name'].localeCompare(b['Name']);
 };
 

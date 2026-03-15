@@ -7,7 +7,7 @@ import { resolvePath } from '../../utils/index.js';
  
 const handleEncrypt = async (dir, input, output, password) => {
     const { state: inputState, path: inputPath } = await resolvePath(dir, input);
-    if(inputState) throw new Error();
+    if(inputState) throw new Error("Operation failed");
  
     const outputPath = resolve(dir, output);
  

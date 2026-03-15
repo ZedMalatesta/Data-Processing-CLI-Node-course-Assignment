@@ -13,7 +13,7 @@ const responceHandler = async (responce, CLS) => {
             console.log(responce['value']);
             return false;
         case "success":
-            if(responce['value']) console.log(responce['value']);
+            if (responce['value']) console.log(responce['value']);
             return false;
         default:
             return false;
@@ -21,7 +21,7 @@ const responceHandler = async (responce, CLS) => {
 }
 
 const app = async () => {
-    try{
+    try {
         const CLS = new CommandLineState();
 
         console.log(
@@ -34,19 +34,23 @@ const app = async () => {
 
         });
 
+        rl.setPrompt('> ');
         console.log(`You are currently in ${CLS.getDir()}`)
         rl.prompt();
-    
+
         rl.on('line', async (line) => {
             const responce = await routing(line, CLS.getDir());
+            const status = responce['status'];
             const isExit = await responceHandler(responce, CLS);
-            if(isExit) rl.close();
+            if (isExit) rl.close();
             else {
-                console.log(`You are currently in ${CLS.getDir()}`) 
+                if (status === 'success' || status === 'changedir') {
+                    console.log(`You are currently in ${CLS.getDir()}`)
+                }
                 rl.prompt();
             }
         });
-        
+
         rl.on('SIGINT', async () => {
             rl.close();
         });
@@ -55,7 +59,7 @@ const app = async () => {
             console.log(`Thank you for using Data Processing CLI!`);
         });
     }
-    catch(err){
+    catch (err) {
         throw err;
     }
 };

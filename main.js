@@ -1,10 +1,25 @@
 import { createInterface } from 'readline/promises';
-import argParser from './utils/argParser.js'
+import CommandLineState from './cliState/index.js';
+import routing from "./repl/index.js";
+
+const responceHandler = async (responce, CLS) => {
+    switch (responce['status']) {
+        case "exit":
+            return true;
+        case "changedir":
+            CLS.setDir(responce['value']);
+            return false;
+        case "error":
+            console.log(responce['value']);
+            return false;
+        default:
+            return false;
+    }
+}
 
 const app = async () => {
     try{
-        const args = await argParser();
-        console.log(args)
+        const CLS = new CommandLineState();
 
         console.log(
             `Welcome to Data Processing CLI!`
@@ -12,14 +27,19 @@ const app = async () => {
 
         const rl = createInterface({
             input: process.stdin,
-            output: process.stdout
+            output: process.stdout,
+
         });
 
-        console.log(`You are currently in workspace`)
+        console.log(`You are currently in ${CLS.getDir()}`)
+        rl.prompt();
     
         rl.on('line', async (line) => {
-            console.log(line)
-            console.log(`You are currently in workspace`) 
+            const responce = await routing(line, CLS.getDir());
+            const isExit = await responceHandler(responce, CLS);
+            if(isExit) rl.close();
+            console.log(`You are currently in ${CLS.getDir()}`) 
+            rl.prompt();
         });
         
         rl.on('SIGINT', async () => {

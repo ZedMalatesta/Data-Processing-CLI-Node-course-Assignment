@@ -4,7 +4,9 @@ import {
     handleLS,
     handleCSVToJson,
     handleJsonToCSV,
-    handleCount
+    handleCount,
+    handleHash,
+    handleHashCompare
 } from "../handlers/index.js"
 import { parseArgs } from '../utils/index.js'
 
@@ -46,6 +48,7 @@ const routing = async (line, currentDir) => {
         ] = new_line;
 
         let newdir = '';
+        let result = '';
 
         switch (comm) {
             case "up":
@@ -70,8 +73,16 @@ const routing = async (line, currentDir) => {
                 return setSuccessStatus("Success!");         
             case "count":
                 if(!flags['input']) return setErrorStatus("Operation failed");
-                const result = await handleCount(currentDir, flags['input']);
-                return setSuccessStatus(`Lines: ${result.lines}\nWords: ${result.words}\nCharacters: ${result.characters}`);           
+                result = await handleCount(currentDir, flags['input']);
+                return setSuccessStatus(`Lines: ${result.lines}\nWords: ${result.words}\nCharacters: ${result.characters}`);
+            case 'hash': 
+                if(!flags['input']) return setErrorStatus("Operation failed");
+                result = await handleHash(currentDir, flags['input'], flags['algorithm'], flags['save']);
+                return setSuccessStatus(`${result.algorithm}: ${result.hashValue}\n`);                   
+            case 'hash-compare': 
+                if(!flags['input']||!flags['hash']) return setErrorStatus("Operation failed");
+                result = await handleHashCompare(currentDir, flags['input'], flags['hash'], flags['algorithm']);
+                return setSuccessStatus(`${result}\n`); 
 
             case ".exit":
                 return setExitStatus();
@@ -81,7 +92,6 @@ const routing = async (line, currentDir) => {
         }
     }
     catch(err){
-        console.error(err);  
         return setErrorStatus("Operation failed");
     }
 };

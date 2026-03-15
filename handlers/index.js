@@ -6,7 +6,9 @@ import {
 import { 
     handleCSVToJson,
     handleJsonToCSV,
-    handleCount
+    handleCount,
+    handleHash,
+    handleHashCompare
 } from "./dataProcessingHandlers/index.js"
  
 export { 
@@ -15,5 +17,7 @@ export {
     handleLS,
     handleCSVToJson,
     handleJsonToCSV,
-    handleCount
+    handleCount,
+    handleHash,
+    handleHashCompare
 };

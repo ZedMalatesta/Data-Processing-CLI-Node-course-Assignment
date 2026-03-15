@@ -1,0 +1,1 @@
+export const SUPPORTED_HASH_ALGS = ['sha256', 'md5', 'sha512'];

@@ -9,7 +9,7 @@ const handleCD = async (currdir, newdir) => {
         }
         else{
             const result = await resolvePath(currdir, newdir);  
-            if(!result['state']) throw new Error();
+            if(!result['state']) throw new Error("Operation failed");
             resdir=result['path'];
         }
         return resdir;

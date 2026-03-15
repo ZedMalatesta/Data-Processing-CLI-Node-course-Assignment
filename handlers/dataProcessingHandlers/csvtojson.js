@@ -2,13 +2,15 @@ import { createReadStream, createWriteStream } from 'fs';
 import { pipeline } from 'stream/promises';
 import { Transform } from 'stream';
 import { basename, extname } from 'path';
+import { resolvePath } from '../../utils/index.js';
 import { resolve } from 'path';
 
 const handleCSVToJson = async (dir, input, output) => {
     const inputFile = input;
     const outputFile = output || basename(inputFile, extname(inputFile)) + '.json';
 
-    const inputPath = resolve(dir, inputFile);
+    const { state, path: inputPath } = await resolvePath(dir, inputFile);
+    if (state) throw new Error();
     const outputPath = resolve(dir, outputFile);
 
     let headers = null;
@@ -63,5 +65,5 @@ const handleCSVToJson = async (dir, input, output) => {
 
     await pipeline(createReadStream(inputPath), transform, createWriteStream(outputPath));
 };
- 
+
 export default handleCSVToJson;

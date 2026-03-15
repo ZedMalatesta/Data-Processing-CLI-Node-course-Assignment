@@ -1,13 +1,17 @@
 import {
     handleUp,
     handleCD,
-    handleLS
+    handleLS,
+    handleCSVToJson,
+    handleJsonToCSV,
+    handleCount
 } from "../handlers/index.js"
+import { parseArgs } from '../utils/index.js'
 
-const setSuccessStatus = () => {
+const setSuccessStatus = (value = '') => {
     return { 
         status:"success", 
-        value:''
+        value
     }
 }
 
@@ -32,36 +36,42 @@ const setErrorStatus = (message) => {
     }
 }
 
-const checkArgumensNeeded = (args, length) => {
-    return args.length<length ? true : false;
-}
-
 const routing = async (line, currentDir) => {
     try{
-        const new_line = line.trim().split("'").join('"').split('"').reduce((arr, curr, index)=>{
-            return index%2!=0 ? [...arr, curr] : [...arr, ...curr.split(" ")]
-        }, []).filter((elem)=> elem);
+        const new_line = await parseArgs(line)
 
         const [
             comm, 
-            ...args
+            flags
         ] = new_line;
-        const clean_dir = currentDir;
+
         let newdir = '';
 
         switch (comm) {
             case "up":
-                newdir = await handleUp(clean_dir); 
+                newdir = await handleUp(currentDir); 
                 return setChangeDirStatus(newdir);
             case "cd":
-                if(checkArgumensNeeded(args, 1)) return setErrorStatus("Invalid input");
+                if(!flags['path']) return setErrorStatus("Invalid input");
                 else {
-                    newdir = await handleCD(clean_dir, args[0]); 
+                    newdir = await handleCD(currentDir, flags['path']); 
                     return setChangeDirStatus(newdir);
                 }
             case "ls":
-                await handleLS(clean_dir);
+                await handleLS(currentDir);
                 return setSuccessStatus();
+            case "csv-to-json":
+                if(!flags['input']) return setErrorStatus("Operation failed");  
+                await handleCSVToJson(currentDir, flags['input'], flags['output'])  
+                return setSuccessStatus("Success!");               
+            case "json-to-csv":
+                if(!flags['input']) return setErrorStatus("Operation failed");  
+                await handleJsonToCSV(currentDir, flags['input'], flags['output'])
+                return setSuccessStatus("Success!");         
+            case "count":
+                if(!flags['input']) return setErrorStatus("Operation failed");
+                const result = await handleCount(currentDir, flags['input']);
+                return setSuccessStatus(`Lines: ${result.lines}\nWords: ${result.words}\nCharacters: ${result.characters}`);           
 
             case ".exit":
                 return setExitStatus();
@@ -71,6 +81,7 @@ const routing = async (line, currentDir) => {
         }
     }
     catch(err){
+        console.error(err);  
         return setErrorStatus("Operation failed");
     }
 };

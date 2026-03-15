@@ -12,6 +12,9 @@ const responceHandler = async (responce, CLS) => {
         case "error":
             console.log(responce['value']);
             return false;
+        case "success":
+            if(responce['value']) console.log(responce['value']);
+            return false;
         default:
             return false;
     }

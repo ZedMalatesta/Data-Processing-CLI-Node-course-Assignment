@@ -4,7 +4,7 @@ import {
 
 const handleUp = async (dir) => {
     try{
-        let parsed_dir = parse(dir);
+        const parsed_dir = parse(dir);
         if(parsed_dir['base']){
             return parsed_dir['dir'];
         }

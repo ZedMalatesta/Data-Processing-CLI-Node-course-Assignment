@@ -1,8 +1,8 @@
-import argParser from './argParser.js';
-import pathResolver from './pathResolver.js';
+import parseArgs from './argParser.js';
+import resolvePath from './pathResolver.js';
 import localSort from './localSort.js';
 export { 
-    argParser,
-    pathResolver,
+    parseArgs,
+    resolvePath,
     localSort
 };

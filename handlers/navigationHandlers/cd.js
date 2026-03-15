@@ -1,5 +1,5 @@
 import { handleUp } from './index.js';
-import { checkDir } from '../../helpers/index.js';
+import { pathResolver } from '../../utils/index.js';
 
 const handleCD = async (currdir, newdir) => {
     try {
@@ -8,7 +8,7 @@ const handleCD = async (currdir, newdir) => {
             resdir = handleUp(currdir);
         }
         else{
-            let result = await checkDir(currdir, newdir);  
+            let result = await pathResolver(currdir, newdir);  
             if(!result['state']) throw new Error();
             resdir=result['path'];
         }

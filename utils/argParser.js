@@ -1,4 +1,4 @@
-const parseDashArgs = async () => {
+const argParser = async () => {
     let all_args = process.argv.slice(2).reduce((lines, arg)=>{
         let parsed_arg=arg.split("--")[1];
         if(parsed_arg&&parsed_arg.split("=").length>1){
@@ -9,4 +9,4 @@ const parseDashArgs = async () => {
     return all_args;
 };
 
-export default parseDashArgs;
+export default argParser;

@@ -1,5 +1,5 @@
 import { readdir } from 'fs/promises';
-import { checkDir, localSort } from '../../helpers/index.js';
+import { pathResolver, localSort } from '../../utils/index.js';
 
 const handleLS = async (dir) => {
     try{
@@ -7,7 +7,7 @@ const handleLS = async (dir) => {
         let new_files = [];
         let new_dirs = [];
         for await (let file of all_files) {
-            let isDir = await checkDir(dir, file);
+            let isDir = await pathResolver(dir, file);
             if(isDir['state']) new_dirs.push({
                 Name: file,
                 Type:"directory" 

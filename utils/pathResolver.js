@@ -1,7 +1,7 @@
 import { stat } from 'fs/promises';
 import { resolve } from 'path';
 
-const checkDir = async (currdir, path) => {
+const pathResolver = async (currdir, path) => {
     try{
         const respath = resolve(currdir, path);
         const state = await stat(respath);
@@ -16,4 +16,4 @@ const checkDir = async (currdir, path) => {
     } 
 };
 
-export default checkDir;
+export default pathResolver;

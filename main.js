@@ -38,8 +38,10 @@ const app = async () => {
             const responce = await routing(line, CLS.getDir());
             const isExit = await responceHandler(responce, CLS);
             if(isExit) rl.close();
-            console.log(`You are currently in ${CLS.getDir()}`) 
-            rl.prompt();
+            else {
+                console.log(`You are currently in ${CLS.getDir()}`) 
+                rl.prompt();
+            }
         });
         
         rl.on('SIGINT', async () => {

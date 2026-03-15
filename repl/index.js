@@ -82,7 +82,15 @@ const routing = async (line, currentDir) => {
             case 'hash-compare': 
                 if(!flags['input']||!flags['hash']) return setErrorStatus("Operation failed");
                 result = await handleHashCompare(currentDir, flags['input'], flags['hash'], flags['algorithm']);
-                return setSuccessStatus(`${result}\n`); 
+                return setSuccessStatus(`${result}\n`);
+            case "encrypt":
+                if(!flags['input'] || !flags['output'] || !flags['password']) return setErrorStatus("Operation failed");
+                await handleEncrypt(currentDir, flags['input'], flags['output'], flags['password']);
+                return setSuccessStatus();
+            case "decrypt":
+                if(!flags['input'] || !flags['output'] || !flags['password']) return setErrorStatus("Operation failed");
+                await handleDecrypt(currentDir, flags['input'], flags['output'], flags['password']);
+                return setSuccessStatus();     
 
             case ".exit":
                 return setExitStatus();

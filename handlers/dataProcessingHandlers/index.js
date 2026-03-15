@@ -3,11 +3,16 @@ import handleJsonToCSV from './jsontocsv.js';
 import handleCount from './count.js';
 import handleHash from './hash.js';
 import handleHashCompare from './hashCompare.js';
-
-export {
+import handleEncrypt from './encrypt.js';
+import handleDecrypt from './decrypt.js';
+ 
+export { 
     handleCSVToJson,
     handleJsonToCSV,
     handleCount,
     handleHash,
-    handleHashCompare
+    handleHashCompare,
+    handleEncrypt,
+    handleDecrypt
 };
+ 

@@ -8,7 +8,9 @@ import {
     handleJsonToCSV,
     handleCount,
     handleHash,
-    handleHashCompare
+    handleHashCompare,
+    handleEncrypt,
+    handleDecrypt
 } from "./dataProcessingHandlers/index.js"
  
 export { 
@@ -19,5 +21,7 @@ export {
     handleJsonToCSV,
     handleCount,
     handleHash,
-    handleHashCompare
+    handleHashCompare,
+    handleEncrypt,
+    handleDecrypt
 };
